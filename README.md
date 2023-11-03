@@ -4,11 +4,11 @@
 <p align="center"> <img src="./docs/terraform-logo-black.png" width="100" height="100"></p>
 
 <h1 align="center">
-    Terraform Auth0 - Applications
+    Terraform Auth0 - APIs aka Resource Servers
 </h1>
 
 <p align="center" style="font-size: 1.2rem;">
-This terraform module is designed to create Auth0 Clients (Applications)
+This terraform module is designed to create Auth0 APIs (Resource Servers)
 </p>
 
 </p>
@@ -19,33 +19,28 @@ This terraform module is designed to create Auth0 Clients (Applications)
 
 ## Example
 
-### Creating Applications on Auth0
+### Creating APIs on Auth0
 
-Let's take the following usage code snipet as an example for the creation of a Public DNS Zone
+Let's take the following usage code snipet as an example for the creation of an API
 
 ```hcl
 
-module "applications" {
+module "apis" {
   source      = ""
 
-  applications       = var.applications
+  applications       = var.apis
 }
 ```
 
 Passing the below value to the module.
 
 ```hcl
-applications ={
-  app = {
-    # Client configuration
-    name = "my-app-name"
+apis ={
+  myapi = {
+    name       = "My API"
+    identifier = "https://my-api.eu.auth0.com/api/v2/"
 
-    app_type    = "non_interactive"
-    grant_types = ["client_credentials"]
-
-    # Binds a client to a Resource Server (API), do not set if you don't want to link your app to a resource server.
-    audience = "https://my-app-name.com"
-    scopes   = ["read:tenant_settings"]
+    skip_consent_for_verifiable_first_party_clients = false
   }
 }
 ```
@@ -67,13 +62,11 @@ applications ={
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_applications"></a> [applications](#input\_applications) | List of Auth0 applications | <pre>map(object({<br>    name        = string<br>    description = optional(string)<br><br>    app_type    = string<br>    grant_types = list(string)<br><br>    allowed_logout_urls = optional(list(string))<br>    callbacks           = optional(list(string))<br>    web_origins         = optional(list(string))<br><br>    organization_require_behavior = optional(string)<br>    organization_usage            = optional(string)<br><br>    sso = optional(bool)<br><br>    mobile = optional(object({<br>      ios = optional(object({<br>        app_bundle_identifier = string<br>        team_id               = string<br>      }))<br><br>      android = optional(object({<br>        app_package_name         = string<br>        sha256_cert_fingerprints = list(string)<br>      }))<br>    }))<br><br>    refresh_token = optional(object({<br>      expiration_type              = string<br>      idle_token_lifetime          = number<br>      infinite_idle_token_lifetime = bool<br>      infinite_token_lifetime      = bool<br>      leeway                       = number<br>      rotation_type                = string<br>      token_lifetime               = number<br>    }))<br><br>    audience = optional(string)<br>    scopes   = optional(list(string))<br>  }))</pre> | n/a | yes |
+| <a name="input_resource_servers"></a> [resource\_servers](#input\_resource\_servers) | List of APIs | <pre>map(object({<br>    name       = string<br>    identifier = string<br><br>    signing_alg    = optional(string)<br>    signing_secret = optional(string)<br><br>    verification_location  = optional(string)<br>    token_dialect          = optional(string)<br>    token_lifetime         = optional(number)<br>    token_lifetime_for_web = optional(number)<br><br><br>    allow_offline_access                            = optional(bool)<br>    enforce_policies                                = optional(bool)<br>    skip_consent_for_verifiable_first_party_clients = optional(bool)<br>  }))</pre> | n/a | yes |
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| <a name="output_client_ids"></a> [client\_ids](#output\_client\_ids) | Applications Client IDs |
+No outputs.
 
 ## Release notes
 
