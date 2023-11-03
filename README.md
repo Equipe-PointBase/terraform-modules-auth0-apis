@@ -28,7 +28,7 @@ Let's take the following usage code snipet as an example for the creation of an 
 module "apis" {
   source      = ""
 
-  applications       = var.apis
+  resource_servers = var.apis
 }
 ```
 
